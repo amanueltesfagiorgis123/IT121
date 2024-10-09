@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student grades</title>
+</head>
+<body>
+<div class="container">
+        <h1>Student Scores</h1>
+        <div id="student-list" class="student-list"></div>
+        <div id="summary" class="summary"></div>
+    </div>
 
+<script>
+    const grades = "jim|25, sue|32, mary|34, ann|22, ted|28, frank|15, lisa|19, mike|30, ahn|26, vishaya|27";
+  
+        function capitalizeName(name) {
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+  
+        function displayStudentData(students) {
+            const studentList = document.getElementById('student-list');
+            const summary = document.getElementById('summary');
+
+
+            students.sort((a, b) => a.score - b.score);
+
+    
+            let output = '';
+            students.forEach(student => {
+                output += `${capitalizeName(student.name)} - ${student.score}<br>`;
+            });
+            studentList.innerHTML = output;
+
+          
+            const totalStudents = students.length;
+            const lowestScore = students[0].score;
+            const highestScore = students[students.length - 1].score;
+            const averageScore = (students.reduce((sum, student) => sum + student.score, 0) / totalStudents).toFixed(2);
+
+          
+            summary.innerHTML = `
+                Total Students: ${totalStudents}<br>
+                Lowest Score: ${lowestScore}<br>
+                Highest Score: ${highestScore}<br>
+                Average Score: ${averageScore}
+            `;
+        }
+
+  
+        displayStudentData(students);
+    </script>
+  
+
+</script>
+
+</body>
+</html>
