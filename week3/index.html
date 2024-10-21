@@ -1,95 +1,125 @@
-<!DOCTYPE html>
+
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Data Display</title>
+    <title>Form Validation</title>
 </head>
 <body>
 
-    <h1 style="text-align:center;">Student Data</h1>
-    <table id="studentTable">
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Student data will be inserted here -->
-        </tbody>
-    </table>
-
-    <div class="summary">
-        <p id="totalStudents"></p>
-        <p id="lowestScore"></p>
-        <p id="highestScore"></p>
-        <p id="averageScore"></p>
+<div class="form-container">
+    <h2>Sign Up Form</h2>
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" placeholder="Enter your first name">
     </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" placeholder="Enter your last name">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter a strong password">
+    </div>
+    <button onclick="validateForm()">Submit</button>
+    <div class="message" id="message"></div>
+</div>
 
-    <script>
-        // Sample student data
-        const students = [
-            { name: 'john', score: 85 },
-            { name: 'mary', score: 92 },
-            { name: 'peter', score: 78 },
-            { name: 'lisa', score: 88 },
-            { name: 'tom', score: 95 }
-        ];
+<script>
+    // Function to validate if the password meets the criteria
+    function validatePassword(password) {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasMinLength = password.length >= 8;
 
-        // Function to capitalize the first letter of each student's name
-        function capitalizeName(name) {
-            return name.charAt(0).toUpperCase() + name.slice(1);
+        return hasUpperCase && hasLowerCase && hasMinLength;
+    }
+
+    // Function to validate the form
+    function validateForm() {
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const messageElement = document.getElementById('message');
+
+        // Check if any input field is invalid (has the error class)
+        if (document.getElementById('firstName').classList.contains('error') ||
+            document.getElementById('lastName').classList.contains('error') ||
+            document.getElementById('password').classList.contains('error')) {
+            messageElement.textContent = "Please correct the errors in the form.";
+            messageElement.className = "failure";
+            return;
         }
 
-        // Function to display student data in the table
-        function displayStudentData(students) {
-            const studentTableBody = document.querySelector("#studentTable tbody");
-            let totalScore = 0;
-            let lowestScore = students[0].score;
-            let highestScore = students[0].score;
+        // If all validations pass, show a success message
+        messageElement.textContent = "Form successfully submitted!";
+        messageElement.className = "success";
 
-            // Clear the table before inserting new rows
-            studentTableBody.innerHTML = '';
+        // Optionally, you can perform actions here, such as:
+        // - Send data to a server
+        // - Store data locally
+        // - Redirect to another page
 
-            students.forEach(student => {
-                const capitalizedStudentName = capitalizeName(student.name);
+        // Example: Logging the data to the console
+        console.log("Form data:", firstName, lastName, password); 
+    }
 
-                // Create a new row for each student
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                const scoreCell = document.createElement('td');
-
-                nameCell.textContent = capitalizedStudentName;
-                scoreCell.textContent = student.score;
-
-                row.appendChild(nameCell);
-                row.appendChild(scoreCell);
-                studentTableBody.appendChild(row);
-
-                // Track total, lowest, and highest scores
-                totalScore += student.score;
-                if (student.score < lowestScore) {
-                    lowestScore = student.score;
-                }
-                if (student.score > highestScore) {
-                    highestScore = student.score;
-                }
-            });
-
-            const totalStudents = students.length;
-            const averageScore = (totalScore / totalStudents).toFixed(2);
-
-            // Display summary statistics
-            document.getElementById('totalStudents').textContent = `Total # of Students: ${totalStudents}`;
-            document.getElementById('lowestScore').textContent = `Lowest Score: ${lowestScore}`;
-            document.getElementById('highestScore').textContent = `Highest Score: ${highestScore}`;
-            document.getElementById('averageScore').textContent = `Average Score: ${averageScore}`;
+    // Real-time validation for first name
+    document.getElementById('firstName').addEventListener('input', function() {
+        const firstName = this.value.trim();
+        const messageDiv = document.getElementById('message');
+        const inputElement = this; // Reference to the input field itself
+        if (firstName === "") {
+            messageDiv.textContent = "First name is required.";
+            messageDiv.className = "failure";
+            inputElement.classList.add("error");
+            inputElement.classList.remove("success");
+        } else {
+            messageDiv.textContent = "";
+            messageDiv.className = "";
+            inputElement.classList.add("success");
+            inputElement.classList.remove("error");
         }
+    });
 
-        // Call the function to display the student data
-        displayStudentData(students);
-    </script>
+    // Real-time validation for last name
+    document.getElementById('lastName').addEventListener('input', function() {
+        const lastName = this.value.trim();
+        const messageDiv = document.getElementById('message');
+        const inputElement = this; // Reference to the input field itself
+        if (lastName === "") {
+            messageDiv.textContent = "Last name is required.";
+            messageDiv.className = "failure";
+            inputElement.classList.add("error");
+            inputElement.classList.remove("success");
+        } else {
+            messageDiv.textContent = "";
+            messageDiv.className = "";
+            inputElement.classList.add("success");
+            inputElement.classList.remove("error");
+        }
+    });
 
+    // Real-time validation for password
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value.trim();
+        const messageDiv = document.getElementById('message');
+        const inputElement = this; // Reference to the input field itself
+        if (!validatePassword(password)) {
+            messageDiv.textContent = "Password must be at least 8 characters long, with at least one uppercase and one lowercase letter.";
+            messageDiv.className = "failure";
+            inputElement.classList.add("error");
+            inputElement.classList.remove("success");
+        } else {
+            messageDiv.textContent = "";
+            messageDiv.className = "";
+            inputElement.classList.add("success");
+            inputElement.classList.remove("error");
+        }
+    });
+
+</script>
 </body>
 </html>
