@@ -2,57 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student grades</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Display</title>
 </head>
 <body>
-<div class="container">
-        <h1>Student Scores</h1>
-        <div id="student-list" class="student-list"></div>
-        <div id="summary" class="summary"></div>
+
+    <h1 style="text-align:center;">Student Data</h1>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Student data will be inserted here -->
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <p id="totalStudents"></p>
+        <p id="lowestScore"></p>
+        <p id="highestScore"></p>
+        <p id="averageScore"></p>
     </div>
 
-<script>
-    const grades = "jim|25, sue|32, mary|34, ann|22, ted|28, frank|15, lisa|19, mike|30, ahn|26, vishaya|27";
-  
+    <script>
+        // Sample student data
+        const students = [
+            { name: 'john', score: 85 },
+            { name: 'mary', score: 92 },
+            { name: 'peter', score: 78 },
+            { name: 'lisa', score: 88 },
+            { name: 'tom', score: 95 }
+        ];
+
+        // Function to capitalize the first letter of each student's name
         function capitalizeName(name) {
             return name.charAt(0).toUpperCase() + name.slice(1);
         }
-  
+
+        // Function to display student data in the table
         function displayStudentData(students) {
-            const studentList = document.getElementById('student-list');
-            const summary = document.getElementById('summary');
+            const studentTableBody = document.querySelector("#studentTable tbody");
+            let totalScore = 0;
+            let lowestScore = students[0].score;
+            let highestScore = students[0].score;
 
+            // Clear the table before inserting new rows
+            studentTableBody.innerHTML = '';
 
-            students.sort((a, b) => a.score - b.score);
-
-    
-            let output = '';
             students.forEach(student => {
-                output += `${capitalizeName(student.name)} - ${student.score}<br>`;
+                const capitalizedStudentName = capitalizeName(student.name);
+
+                // Create a new row for each student
+                const row = document.createElement('tr');
+                const nameCell = document.createElement('td');
+                const scoreCell = document.createElement('td');
+
+                nameCell.textContent = capitalizedStudentName;
+                scoreCell.textContent = student.score;
+
+                row.appendChild(nameCell);
+                row.appendChild(scoreCell);
+                studentTableBody.appendChild(row);
+
+                // Track total, lowest, and highest scores
+                totalScore += student.score;
+                if (student.score < lowestScore) {
+                    lowestScore = student.score;
+                }
+                if (student.score > highestScore) {
+                    highestScore = student.score;
+                }
             });
-            studentList.innerHTML = output;
 
-          
             const totalStudents = students.length;
-            const lowestScore = students[0].score;
-            const highestScore = students[students.length - 1].score;
-            const averageScore = (students.reduce((sum, student) => sum + student.score, 0) / totalStudents).toFixed(2);
+            const averageScore = (totalScore / totalStudents).toFixed(2);
 
-          
-            summary.innerHTML = `
-                Total Students: ${totalStudents}<br>
-                Lowest Score: ${lowestScore}<br>
-                Highest Score: ${highestScore}<br>
-                Average Score: ${averageScore}
-            `;
+            // Display summary statistics
+            document.getElementById('totalStudents').textContent = `Total # of Students: ${totalStudents}`;
+            document.getElementById('lowestScore').textContent = `Lowest Score: ${lowestScore}`;
+            document.getElementById('highestScore').textContent = `Highest Score: ${highestScore}`;
+            document.getElementById('averageScore').textContent = `Average Score: ${averageScore}`;
         }
 
-  
+        // Call the function to display the student data
         displayStudentData(students);
     </script>
-  
-
-</script>
 
 </body>
 </html>
