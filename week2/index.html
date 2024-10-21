@@ -1,18 +1,51 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pig Latin Translator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Latin Translator</title>
 </head>
 <body>
-  <h1>Pig Latin Translator</h1>
-  
-  <input type="text" id="inputText" placeholder="Enter a sentence">
-  <button onclick="translateToPigLatin()">Translate</button>
-  
-  <h2>Translation:</h2>
-  <p id="outputText"></p>
+    <h1>Pig Latin Translator</h1>
+    <input type="text" id="textInput" placeholder="Enter text">
+    <button onclick="translateToPigLatin()">Translate</button>
+    <p id="output"></p>
+
+    <script>
+   function translateToPigLatin() {
+    const inputText = document.getElementById('textInput').value.trim();
+    const outputElement = document.getElementById('output');
+
+    // Check if input is empty or a single-letter word
+    if (inputText === "" || inputText.length === 1) {
+        outputElement.textContent = "Input can't be translated.";
+        return;
+    }
+
+    const words = inputText.split(/\s+/); // Split input by spaces to handle multiple words
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+
+    const translatedWords = words.map(word => {
+        const lowerWord = word.toLowerCase();
+        if (vowels.includes(lowerWord[0])) {
+            // Word begins with a vowel
+            return word + "way";
+        } else {
+            // Find the first vowel position
+            let firstVowelIndex = 0;
+            while (firstVowelIndex < lowerWord.length && !vowels.includes(lowerWord[firstVowelIndex])) {
+                firstVowelIndex++;
+            }
+
+            // Move consonants before the first vowel to the end
+            return lowerWord.slice(firstVowelIndex) + lowerWord.slice(0, firstVowelIndex) + "ay";
+        }
+    });
+
+    // Join translated words back into a sentence
+    outputElement.textContent = translatedWords.join(" ");
+}
+        
+    </script>
 </body>
 </html>
