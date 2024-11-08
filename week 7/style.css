@@ -1,0 +1,39 @@
+body {
+  font-family: sans-serif;
+}
+
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.house-button {
+  margin: 0 5px;
+  padding: 8px 15px;
+  border: none;
+  background-color: #4CAF50; /* Example color */
+  color: white;
+  cursor: pointer;
+}
+
+/* Hover effect for buttons */
+.house-button:hover {
+  background-color: #3e8e41;
+}
