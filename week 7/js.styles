@@ -1,0 +1,56 @@
+const characters = [
+  { name: "Harry Potter", house: "Gryffindor", patronus: "Stag" },
+  { name: "Hermione Granger", house: "Gryffindor", patronus: "Otter" },
+  { name: "Ron Weasley", house: "Gryffindor", patronus: "Jack Russell Terrier" },
+  { name: "Draco Malfoy", house: "Slytherin", patronus: "None" },
+  { name: "Luna Lovegood", house: "Ravenclaw", patronus: "Hare" },
+  { name: "Neville Longbottom", house: "Gryffindor", patronus: "Remembrall" },
+  // ... add more characters
+];
+
+const characterTableBody = document.getElementById("characterTableBody");
+const resetButton = document.getElementById("resetButton");
+
+// Function to create table rows
+function createCharacterRows(characters) {
+  characterTableBody.innerHTML = ''; // Clear existing rows
+
+  characters.forEach(character => {
+    const row = characterTableBody.insertRow();
+    const nameCell = row.insertCell();
+    const houseCell = row.insertCell();
+    const patronusCell = row.insertCell();
+
+    nameCell.textContent = character.name;
+    houseCell.textContent = character.house;
+    patronusCell.textContent = character.patronus;
+  });
+}
+
+// Function to create house filter buttons
+function createHouseFilterButtons() {
+  const uniqueHouses = new Set(characters.map(character => character.house));
+
+  uniqueHouses.forEach(house => {
+    const button = document.createElement('button');
+    button.textContent = house;
+    button.classList.add('house-button');
+
+    // Event listener for each filter button
+    button.addEventListener('click', () => {
+      const filteredCharacters = characters.filter(character => character.house === house);
+      createCharacterRows(filteredCharacters);
+    });
+
+    document.querySelector('.filter-buttons').appendChild(button);
+  });
+}
+
+// Reset button functionality
+resetButton.addEventListener('click', () => {
+  createCharacterRows(characters); // Show all characters
+});
+
+// Initial display of all characters
+createCharacterRows(characters);
+createHouseFilterButtons();
