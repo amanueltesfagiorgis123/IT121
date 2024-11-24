@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Animation</title>
+  <style>
+    canvas {
+      display: block;
+      margin: auto;
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// Animation variables
+let angle = 0;
+let rectX = 50;
+let rectY = 50;
+let directionX = 2;
+let directionY = 2;
+
+// Helper function to draw a rectangle
+function drawRectangle(x, y, width, height, fillStyle) {
+  ctx.fillStyle = fillStyle;
+  ctx.fillRect(x, y, width, height);
+}
+
+// Helper function to draw a circle
+function drawCircle(x, y, radius, strokeStyle, fillStyle) {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = strokeStyle;
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+  ctx.stroke();
+}
+
+// Draw a line
+function drawLine(x1, y1, x2, y2, strokeStyle) {
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.strokeStyle = strokeStyle;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// Animation loop
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Save canvas state
+  ctx.save();
+
+  // Draw a rotating rectangle
+  ctx.translate(400, 300); // Center point
+  ctx.rotate((angle * Math.PI) / 180); // Convert angle to radians
+  drawRectangle(-50, -50, 100, 100, 'blue');
+
+  // Restore canvas state
+  ctx.restore();
+
+  // Draw bouncing rectangle
+  rectX += directionX;
+  rectY += directionY;
+
+  if (rectX <= 0 || rectX + 100 >= canvas.width) directionX *= -1;
+  if (rectY <= 0 || rectY + 100 >= canvas.height) directionY *= -1;
+
+  drawRectangle(rectX, rectY, 100, 50, 'green');
+
+  // Draw a line
+  drawLine(0, 0, canvas.width, canvas.height, 'red');
+
+  // Draw a circle
+  drawCircle(400, 300, 50, 'black', 'yellow');
+
+  // Increment angle for rotation
+  angle += 2;
+
+  // Request the next animation frame
+  requestAnimationFrame(animate);
+}
+
+// Start the animation
+animate();
+  </script>
+</body>
+</html>
