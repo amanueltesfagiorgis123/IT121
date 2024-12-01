@@ -1,0 +1,20 @@
+{
+  "name": "week11",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanueltesfagiorgis123/IT121.git"
+  },
+  "author": "Amanuel Tesfagiorgis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amanueltesfagiorgis123/IT121/issues"
+  },
+  "homepage": "https://github.com/amanueltesfagiorgis123/IT121#readme",
+  "description": ""
+}
